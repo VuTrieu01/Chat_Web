@@ -1,11 +1,13 @@
 const colorConfigs = {
   sidebar: {
-    bg: "#d5d5f1",
+    bg: "#dcdeff",
+    color: "#e0e0e0",
+    avatarName: "#000",
   },
   topbar: {
     color: "#000",
   },
-  mainBg: "#f3f3ff",
+  mainBg: "#f5f5f7",
 };
 
 export default colorConfigs;

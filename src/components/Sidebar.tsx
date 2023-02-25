@@ -1,31 +1,48 @@
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import React from "react";
-import { Avatar, Stack } from "@mui/material";
+import React, { useState } from "react";
+import { Avatar, Drawer, Stack, Typography, Tab, Tabs } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import sizeConfigs from "../configs/sizeConfigs";
+import colorConfigs from "../configs/colorConfigs";
+import routesConfig from "../routes/Routes";
 
 function Sidebar() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   return (
-    <Box
+    <Drawer
+      variant="permanent"
       sx={{
-        display: "flex",
-        flexDirection: "column",
+        width: sizeConfigs.sidebar.width,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: sizeConfigs.sidebar.width,
+          boxSizing: "border-box",
+          borderRight: "0px",
+          backgroundColor: colorConfigs.sidebar.bg,
+          color: colorConfigs.sidebar.color,
+        },
       }}
     >
       <Stack alignItems="center" spacing={2} sx={{ my: 5 }}>
         <Avatar
           alt="Remy Sharp"
-          src="/static/images/avatar/1.jpg"
-          sx={{ width: 56, height: 56, border: 2.5 }}
+          src="https://material-ui.com/static/images/avatar/1.jpg"
+          sx={{ width: 56, height: 56, border: 2.5, borderColor: "#fff" }}
         />
-        <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-          Jimi Hendrix
+        <Typography
+          variant="subtitle2"
+          sx={{
+            fontWeight: "bold",
+            color: colorConfigs.sidebar.avatarName,
+            cursor: "pointer",
+          }}
+        >
+          Jimi Hendrix <FontAwesomeIcon icon={faChevronDown} />
         </Typography>
       </Stack>
       <Tabs
@@ -37,35 +54,32 @@ function Sidebar() {
           borderColor: "divider",
           "& .MuiTabs-indicator": {
             left: 0,
+            width: 3,
+          },
+          "& .MuiButtonBase-root": {
+            justifyContent: "flex-start",
+            pl: 5,
+            mb: 2,
+          },
+          ".css-h0q0iv-MuiButtonBase-root-MuiTab-root>.MuiTab-iconWrapper": {
+            mr: 2,
+          },
+          ".css-h0q0iv-MuiButtonBase-root-MuiTab-root": {
+            minHeight: "50px",
           },
         }}
       >
-        <Tab label="Item One" />
-        <Tab label="Item Two" />
-        <Tab label="Item Three" />
-        <Tab label="Item Four" />
-        <Tab label="Item Five" />
-        <Tab label="Item Six" />
+        {routesConfig.map((route, index) => (
+          <Tab
+            component={Link}
+            to={route.path ? route.path : "/"}
+            iconPosition="start"
+            icon={route.sidebarProps?.icon}
+            label={route.sidebarProps?.displayText}
+          />
+        ))}
       </Tabs>
-      {/* <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel> */}
-    </Box>
+    </Drawer>
   );
 }
 

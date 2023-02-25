@@ -1,9 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap");
 body {
-  font-family: "Public Sans", sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
   margin: 0;
+  padding: 0;
 }
 
 input,
@@ -20,32 +17,4 @@ h4,
 h5,
 h6 {
   overflow-wrap: break-word;
-}
-:root {
-  --blue: #d5d5f1;
-  --black: #242d49;
-  --glass: #f3f3ff;
-}
-
-.App {
-  color: var(--black);
-  background: linear-gradient(
-    106.37deg,
-    #f3c6f1 29.63%,
-    #ffcfd1 51.55%,
-    #ffe1bc 90.85%
-  );
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .AppGlass {
-    display: grid;
-    height: 85%;
-    width: 95%;
-    background: var(--glass);
-    gap: 16px;
-    grid-template-columns: 11rem auto 20rem;
-    overflow: hidden;
-  }
 }
