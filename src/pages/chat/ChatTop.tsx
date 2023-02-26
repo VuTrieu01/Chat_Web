@@ -1,15 +1,8 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Badge, Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
-function ChatTopPage() {
+function ChatTop() {
   return (
     <Box
       sx={{
@@ -22,8 +15,8 @@ function ChatTopPage() {
       <IconButton size="small">
         <FontAwesomeIcon icon={faCaretDown} />
       </IconButton>
-      <Tooltip title="Account settings">
-        <IconButton size="small" sx={{ mx: 8 }}>
+      <Tooltip title="">
+        <IconButton size="small" sx={{ mx: 6 }}>
           <Badge badgeContent={0} color="error">
             <FontAwesomeIcon icon={faBell} />
           </Badge>
@@ -33,4 +26,4 @@ function ChatTopPage() {
   );
 }
 
-export default ChatTopPage;
+export default ChatTop;

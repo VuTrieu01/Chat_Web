@@ -20,10 +20,8 @@ function MainLayout() {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
           p: 3,
           width: `calc(100% - ${sizeConfigs.sidebar.width})`,
-          backgroundColor: colorConfigs.mainBg,
         }}
       >
         <Outlet />

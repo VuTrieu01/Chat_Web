@@ -1,15 +1,6 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import ChatTopPage from "./ChatTopPage";
-import ChatMainPage from "./ChatMainPage";
+import { Box } from "@mui/material";
+import ChatTop from "./ChatTop";
+import ChatMain from "./ChatMain";
 
 function ChatPage() {
   return (
@@ -19,8 +10,8 @@ function ChatPage() {
         flexDirection: "column",
       }}
     >
-      <ChatTopPage />
-      <ChatMainPage />
+      <ChatTop />
+      <ChatMain />
     </Box>
   );
 }

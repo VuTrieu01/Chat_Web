@@ -2,7 +2,7 @@ import { width } from "@mui/system";
 
 const sizeConfigs = {
   sidebar: {
-    width: "250px",
+    width: "15.625rem",
   },
 };
 

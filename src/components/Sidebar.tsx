@@ -30,9 +30,9 @@ function Sidebar() {
     >
       <Stack alignItems="center" spacing={2} sx={{ my: 5 }}>
         <Avatar
-          alt="Remy Sharp"
+          alt="Jimi Hendrix"
           src="https://material-ui.com/static/images/avatar/1.jpg"
-          sx={{ width: 56, height: 56, border: 2.5, borderColor: "#fff" }}
+          sx={{ width: 60, height: 60, border: 2.5, borderColor: "#fff" }}
         />
         <Typography
           variant="subtitle2"
