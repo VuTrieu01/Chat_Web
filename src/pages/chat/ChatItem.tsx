@@ -1,5 +1,7 @@
+import { useState } from "react";
 import {
   Avatar,
+  Badge,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -7,622 +9,97 @@ import {
   Typography,
 } from "@mui/material";
 import StyledOnlineBadge from "../../components/StyledOnlineBadge";
+import { ChatData } from "../../models/chat";
+import { isNamedExports } from "typescript";
+interface ChatDataProps {
+  data: ChatData[];
+  setChat?: (value: ChatData) => void;
+}
 
-function ChatItem() {
+function ChatItem({ data, setChat }: ChatDataProps) {
+  const [value, setValue] = useState(-1);
+  let count = 0;
+
+  const handleChat = (value: ChatData, index: number) => {
+    if (setChat) {
+      setChat(value);
+    }
+    setValue(index);
+  };
+
   return (
     <>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
+      {data.map((item, index) => (
+        <ListItem
+          disablePadding
+          key={index}
           sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
+            mb: 1,
+            pr: 1,
           }}
         >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
+          <ListItemButton
+            onClick={() => handleChat(item, index)}
+            selected={value === index ? true : false}
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
+              bgcolor: "background.paper",
+              borderRadius: 1,
+              "& .MuiListItemIcon-root": {
+                minWidth: 0,
+              },
             }}
           >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
+            <ListItemIcon>
+              <StyledOnlineBadge
+                overlap="circular"
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                variant="dot"
+              >
+                <Avatar src={item.avatar} sx={{ width: 45, height: 45 }} />
+              </StyledOnlineBadge>
+            </ListItemIcon>
+            <ListItemText sx={{ ml: 2 }}>
+              <Typography variant="body1" fontWeight="bold">
+                {item.name}
+              </Typography>
 
-      {/*Test */}
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
+              <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
+                {item.detailChat
+                  .filter((item) => item.newContent == true)
+                  .map((item, index, array) => {
+                    if (array.length - 1 === index) {
+                      return item.content;
+                    }
+                  })}
+              </Typography>
+            </ListItemText>
+            <ListItemIcon
               sx={{
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
+                flexDirection: "column",
+                alignItems: "flex-end",
               }}
             >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
+              <Typography variant="body2">{item.day}</Typography>
+              <Badge
+                badgeContent={
+                  item.detailChat.filter((item) => {
+                    return item.newContent == true && item.type === false;
+                  }).length
+                }
+                sx={{
+                  "& .MuiBadge-badge": {
+                    bgcolor: "#ff1744",
+                  },
+                  mt: 1,
+                  mr: 1,
+                  color: "#fff",
+                }}
               />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding sx={{ mb: 1, pr: 1 }}>
-        <ListItemButton
-          sx={{
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            "& .MuiListItemIcon-root": {
-              minWidth: 0,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <StyledOnlineBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Alice"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-                sx={{ width: 45, height: 45 }}
-              />
-            </StyledOnlineBadge>
-          </ListItemIcon>
-          <ListItemText sx={{ ml: 2 }}>
-            <Typography variant="body1" fontWeight="bold">
-              Alice
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-              Save 8 pm
-            </Typography>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="body2">02 Feb</Typography>
-            <Typography
-              variant="body2"
-              fontSize={10}
-              fontWeight="bold"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "#ff1744",
-                color: "background.paper",
-                width: 15,
-                height: 15,
-                p: 0.3,
-                mt: 1,
-                borderRadius: "50%",
-              }}
-            >
-              99
-            </Typography>
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
+            </ListItemIcon>
+          </ListItemButton>
+        </ListItem>
+      ))}
     </>
   );
 }

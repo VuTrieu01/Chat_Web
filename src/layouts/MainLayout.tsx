@@ -1,31 +1,61 @@
-import { Toolbar, Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import { user } from "../assets/data/Data";
 import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import colorConfigs from "../configs/colorConfigs";
 import sizeConfigs from "../configs/sizeConfigs";
 
 function MainLayout() {
+  const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Box sx={{ display: "flex" }}>
-      <Box
-        component="nav"
-        sx={{
-          width: sizeConfigs.sidebar.width,
-          flexShrink: 0,
-        }}
-      >
-        <Sidebar />
-      </Box>
-      <Box
-        component="main"
-        sx={{
-          p: 3,
-          width: `calc(100% - ${sizeConfigs.sidebar.width})`,
-        }}
-      >
-        <Outlet />
-      </Box>
+      {isMatch ? (
+        <>
+          <Box
+            component="nav"
+            sx={{
+              width: 0,
+              flexShrink: 0,
+            }}
+          >
+            {user.map((item, index) => (
+              <Sidebar data={item} key={index} />
+            ))}
+          </Box>
+          <Box
+            component="main"
+            sx={{
+              p: 3,
+              width: "100%",
+            }}
+          >
+            <Outlet />
+          </Box>
+        </>
+      ) : (
+        <>
+          <Box
+            component="nav"
+            sx={{
+              width: sizeConfigs.sidebar.width,
+              flexShrink: 0,
+            }}
+          >
+            {user.map((item, index) => (
+              <Sidebar data={item} key={index} />
+            ))}
+          </Box>
+          <Box
+            component="main"
+            sx={{
+              p: 3,
+              width: `calc(100% - ${sizeConfigs.sidebar.width})`,
+            }}
+          >
+            <Outlet />
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

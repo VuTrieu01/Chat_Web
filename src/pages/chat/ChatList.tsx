@@ -4,8 +4,13 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import colorConfigs from "../../configs/colorConfigs";
 import Scrollbar from "../../components/Scrollbar";
 import ChatItem from "./ChatItem";
+import { ChatData } from "../../models/chat";
+interface ChatDataProps {
+  data: ChatData[];
+  setChat?: (value: ChatData) => void;
+}
 
-function ChatListPage() {
+function ChatListPage({ data, setChat }: ChatDataProps) {
   return (
     <>
       <Paper
@@ -27,7 +32,7 @@ function ChatListPage() {
       <Divider sx={{ mr: "1.25rem" }} />
       <List>
         <Scrollbar sx={{ maxHeight: "34.4rem", mr: "0.625rem" }}>
-          <ChatItem />
+          <ChatItem data={data} setChat={setChat} />
         </Scrollbar>
       </List>
     </>

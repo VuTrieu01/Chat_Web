@@ -1,8 +1,15 @@
+import { useState } from "react";
 import { Box, Grid, Stack, Typography } from "@mui/material";
+import { ChatData } from "../../models/chat";
 import ChatList from "./ChatList";
 import Conversations from "./Conversations";
+interface ChatDataProps {
+  data: ChatData[];
+}
 
-function ChatMain() {
+function ChatMain({ data }: ChatDataProps) {
+  const [chat, setChat] = useState<ChatData>();
+
   return (
     <Box sx={{ mx: 5 }}>
       <Stack spacing={2}>
@@ -12,11 +19,11 @@ function ChatMain() {
           </Grid>
         </Grid>
         <Grid container px={1}>
-          <Grid item xs={4}>
-            <ChatList />
+          <Grid item xs={5}>
+            <ChatList data={data} setChat={setChat} />
           </Grid>
-          <Grid item xs={8}>
-            <Conversations />
+          <Grid item xs={7}>
+            <Conversations data={chat} />
           </Grid>
         </Grid>
       </Stack>

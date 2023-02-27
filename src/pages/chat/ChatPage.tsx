@@ -1,8 +1,10 @@
 import { Box } from "@mui/material";
 import ChatTop from "./ChatTop";
 import ChatMain from "./ChatMain";
+import { user } from "../../assets/data/Data";
 
 function ChatPage() {
+  const chatData = user.map((item) => item.chatData);
   return (
     <Box
       sx={{
@@ -11,7 +13,9 @@ function ChatPage() {
       }}
     >
       <ChatTop />
-      <ChatMain />
+      {chatData.map((item, index) => (
+        <ChatMain data={item} key={index} />
+      ))}
     </Box>
   );
 }
