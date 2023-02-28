@@ -4,6 +4,7 @@ import {
   faFaceSmile,
   faPaperclip,
   faPaperPlane,
+  faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Avatar,
@@ -20,38 +21,50 @@ import {
   Paper,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import Scrollbar from "../../components/Scrollbar";
 import colorConfigs from "../../configs/colorConfigs";
-import { ChatData, DetailChat } from "../../models/chat";
+import { ChatData } from "../../models/chat";
 interface ChatDataProps {
   data: ChatData | undefined;
+  idUser?: number;
+  content?: string;
+  setOpen?: (value: boolean) => void;
 }
 
-function Conversations({ data }: ChatDataProps) {
-  const [chats, setChats] = useState<any>();
-  const [idUser, setIdUser] = useState(0);
-  const [content, setContent] = useState("");
+const getDataFromLS = () => {
+  const data = localStorage.getItem("chat");
+  if (data) {
+    return JSON.parse(data);
+  } else {
+    return [];
+  }
+};
 
-  const handleClick = (e: any) => {
-    if (data !== undefined) {
+function Conversations({ data, setOpen }: ChatDataProps) {
+  const [chats, setChats] = useState(getDataFromLS());
+  const [content, setContent] = useState("");
+  const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
+  const handleClick = () => {
+    if (data !== undefined && content !== "") {
       let chat = {
         idUser: data.id,
         content,
       };
-
-      setChats(chat);
+      setChats([...chats, chat]);
       setContent("");
     }
-    localStorage.setItem("chat", "s");
+  };
+
+  const handleClickOpen = () => {
+    if (setOpen) setOpen(false);
   };
 
   useEffect(() => {
-    // try {
-    //   localStorage.setItem("chat", JSON.stringify(chats));
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    localStorage.setItem("chat", JSON.stringify(chats));
   }, [chats]);
 
   return (
@@ -65,8 +78,21 @@ function Conversations({ data }: ChatDataProps) {
               backgroundColor: colorConfigs.mainBg,
             }}
           >
-            <Typography variant="body1" fontWeight="bold" sx={{ fontSize: 18 }}>
-              {data.nickName}
+            <Typography
+              variant="body1"
+              fontWeight="bold"
+              sx={{ fontSize: 18, display: "flex" }}
+            >
+              {isMatch ? (
+                <>
+                  <IconButton size="small" onClick={handleClickOpen}>
+                    <FontAwesomeIcon icon={faAngleLeft} fontSize={16} />
+                  </IconButton>
+                  {data.nickName}
+                </>
+              ) : (
+                <>{data.nickName}</>
+              )}
             </Typography>
             <Typography variant="body2" fontWeight="bold" color="#9e9e9e">
               From: {data.name}
@@ -137,6 +163,32 @@ function Conversations({ data }: ChatDataProps) {
                   </ListItem>
                 )
               )}
+              {chats
+                .filter((itemLS: ChatDataProps) => itemLS.idUser === data.id)
+                .map((itemLS: ChatDataProps, index: number) => (
+                  <ListItem key={index}>
+                    <Grid
+                      container
+                      direction="column"
+                      justifyContent="flex-end"
+                      alignItems="flex-end"
+                    >
+                      <Grid item xs={12}>
+                        <ListItemText
+                          primary={itemLS.content}
+                          sx={{
+                            bgcolor: colorConfigs.chatpage.bgMe,
+                            color: colorConfigs.chatpage.colorMe,
+                            px: 2,
+                            py: 1,
+                            borderRadius: 6,
+                            ml: 12,
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                ))}
             </Scrollbar>
           </List>
 

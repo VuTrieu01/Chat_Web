@@ -8,9 +8,10 @@ import { ChatData } from "../../models/chat";
 interface ChatDataProps {
   data: ChatData[];
   setChat?: (value: ChatData) => void;
+  setOpen?: (value: boolean) => void;
 }
 
-function ChatListPage({ data, setChat }: ChatDataProps) {
+function ChatListPage({ data, setChat, setOpen }: ChatDataProps) {
   return (
     <>
       <Paper
@@ -32,7 +33,7 @@ function ChatListPage({ data, setChat }: ChatDataProps) {
       <Divider sx={{ mr: "1.25rem" }} />
       <List>
         <Scrollbar sx={{ maxHeight: "34.4rem", mr: "0.625rem" }}>
-          <ChatItem data={data} setChat={setChat} />
+          <ChatItem data={data} setChat={setChat} setOpen={setOpen} />
         </Scrollbar>
       </List>
     </>

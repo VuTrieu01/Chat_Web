@@ -8,16 +8,13 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import ChatPage from "../pages/chat/ChatPage";
-import PropertiesPage from "../pages/properties/PropertiesPage";
 import { RouteType } from "./config";
-import CalendarPage from "../pages/calendar/CalendarPage";
-import OffersPage from "../pages/offers/OffersPage";
-import DocumentsPage from "../pages/documents/DocumentsPage";
-import SettingsPage from "../pages/settings/SettingsPage";
+import NotFound from "../components/NotFound";
+import BuildPage from "../pages/build/BuildPage";
 const routesConfig: RouteType[] = [
   {
     index: true,
-    element: <PropertiesPage />,
+    element: <BuildPage />,
     sidebarProps: {
       icon: <FontAwesomeIcon icon={faHouse} />,
       displayText: "Properties",
@@ -33,7 +30,7 @@ const routesConfig: RouteType[] = [
   },
   {
     path: "/calendar",
-    element: <CalendarPage />,
+    element: <BuildPage />,
     sidebarProps: {
       icon: <FontAwesomeIcon icon={faCalendar} />,
       displayText: "Calendar",
@@ -41,7 +38,7 @@ const routesConfig: RouteType[] = [
   },
   {
     path: "/offers",
-    element: <OffersPage />,
+    element: <BuildPage />,
     sidebarProps: {
       icon: <FontAwesomeIcon icon={faTag} />,
       displayText: "Offers",
@@ -49,7 +46,7 @@ const routesConfig: RouteType[] = [
   },
   {
     path: "/documents",
-    element: <DocumentsPage />,
+    element: <BuildPage />,
     sidebarProps: {
       icon: <FontAwesomeIcon icon={faFile} />,
       displayText: "Documents",
@@ -57,11 +54,15 @@ const routesConfig: RouteType[] = [
   },
   {
     path: "/setting",
-    element: <SettingsPage />,
+    element: <BuildPage />,
     sidebarProps: {
       icon: <FontAwesomeIcon icon={faGear} />,
       displayText: "Settings",
     },
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ];
 
