@@ -73,7 +73,7 @@ export const user = [
           {
             content: "Hey",
             time: "7:56",
-            newContent: false,
+            newContent: true,
             type: false,
           },
         ],

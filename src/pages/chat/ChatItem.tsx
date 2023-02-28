@@ -84,13 +84,11 @@ function ChatItem({ data, setChat, setOpen }: ChatDataProps) {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {item.detailChat
-                    .filter((item) => item.newContent == true)
-                    .map((item, index, array) => {
-                      if (array.length - 1 === index) {
-                        return item.content;
-                      }
-                    })}
+                  {item.detailChat.map((item, index, array) => {
+                    if (array.length - 1 === index) {
+                      return item.content;
+                    }
+                  })}
                 </Typography>
               </ListItemText>
               <ListItemIcon
@@ -153,13 +151,11 @@ function ChatItem({ data, setChat, setOpen }: ChatDataProps) {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {item.detailChat
-                    .filter((item) => item.newContent == true)
-                    .map((item, index, array) => {
-                      if (array.length - 1 === index) {
-                        return item.content;
-                      }
-                    })}
+                  {item.detailChat.map((item, index, array) => {
+                    if (array.length - 1 === index) {
+                      return item.content;
+                    }
+                  })}
                 </Typography>
               </ListItemText>
               <ListItemIcon
